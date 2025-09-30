@@ -1,0 +1,14 @@
+FROM nvcr.io/nvidia/nemo:25.07.02@sha256:abd486b84f7140bc0c90b138bf5962af1d3c50e31cd7906c523bb9e79081cbb7
+SHELL ["/bin/bash", "-c"]
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Tokyo
+# install git-lfs
+RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash
+RUN apt-get update ; apt-get install git-lfs
+RUN git lfs install
+RUN git clone && \
+    git checkout f5970c59529949593b845476348da16c8235289b && \
+    cd Run && \
+    pip install -e .
+RUN apt clean all && \
+    rm -rf /var/lib/apt/lists/*
